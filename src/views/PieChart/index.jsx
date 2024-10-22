@@ -25,10 +25,10 @@ const PieChart = ({ data }) => {
     plugins: {
       legend: {
         position: 'right', 
-        align: 'center', 
+        align: 'left', 
         labels: {
-          boxWidth: 40, 
-          padding: 70, 
+          boxWidth: 20, 
+          padding: 15, 
         },
       },
     },

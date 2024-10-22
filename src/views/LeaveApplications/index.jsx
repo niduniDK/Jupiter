@@ -60,21 +60,11 @@ const LeaveApplications = () => {
                   <th>
                     <h6 className="mb-1">ID</h6>
                   </th>
-                  {/* <th>
-                    <h6 className="mb-1">Request Date</h6>
-                  </th> */}
+                 
                   <th>
                     <h6 className="mb-1">Leave Start Date</h6>
                   </th>
-                  {/* <th>
-                    <h6 className="mb-1">Period of Absence</h6>
-                  </th>
-                  <th>
-                    <h6 className="mb-1">Reason</h6>
-                  </th>
-                  <th>
-                    <h6 className="mb-1">Type of Leave</h6>
-                  </th> */}
+                
                   <th>
                     <h6 className="mb-1">Status</h6>
                   </th>
@@ -93,32 +83,20 @@ const LeaveApplications = () => {
                       <td>
                         <h6 className="mb-1">{employee_id}</h6>
                       </td>
-                      {/* <td>
-                        <h6 className="mb-1">{request_date}</h6>
-                      </td> */}
+                      
                       <td>
                         <h6 className="mb-1">{leave_start_date}</h6>
                       </td>
-                      {/* <td>
-                        <h6 className="mb-1">{period_of_absence}</h6>
-                      </td>
-                      <td>
-                        <h6 className="mb-1">{reason}</h6>
-                      </td>
-                      <td>
-                        <h6 className="mb-1">{type_of_leave}</h6>
-                      </td> */}
+                      
                       <td>
                         <h6 className="mb-1">{status}</h6>
                       </td>
                       <td>
                         <Button variant="primary" size="sm" style={{marginLeft: '50px', background: '#47b9ff'}} onClick={viewLeaveRequest}>View</Button>
-                        {/* <Button variant="primary" size="sm" style={{marginLeft: '50px', background: '#b861ff'}} onClick={rejecttLeaveRequest}>Reject</Button> */}
                       </td>
                       </tr>
                     )
                   }
-                    
                 )}
 
                 </tbody>
@@ -126,25 +104,7 @@ const LeaveApplications = () => {
             </Card.Body>
             
           </Card>
-        
-
-            {/* <Col key={1} xl={4} className="user-activity">
-              <Card>
-              <Tabs defaultActiveKey="celebrations" id="uncontrolled-tab-example">
-                <Tab eventKey="celebrations" title="Celebrations">
-                  {tabContent}
-                </Tab>
-                <Tab eventKey="achievements" title="Achievements">
-                  {tabContent}
-                </Tab>
-                <Tab eventKey="all" title="All">
-                  {tabContent}
-                </Tab>
-              </Tabs>
-            </Card>
-            </Col> */}
-          
-        
+                
       </Row>
     </React.Fragment>
   );

@@ -2,19 +2,23 @@ import React from 'react';
 import { Row, Col, Card, Button, Form } from 'react-bootstrap';
 
 const LeaveRequestForm = (props) => {
+  const approveRequest = (props) => {
+    props.status = 'Approved';
+  }
+
   return (
     <React.Fragment>
       <div className="auth-wrapper d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-        <div className="auth-content">
+        <div className="auth-content d-flex justify-content-center align-items-center" style={{width:'200%'}}>
           <div className="auth-bg">
             <span className="r" />
             <span className="r s" />
             <span className="r s" />
             <span className="r" />
           </div>
-      <Card className='d-flex justify-content-center align-items-center min-vh-100'>
-        <Card.Header>Leave Request Details</Card.Header>
-        <Card.Body>
+      <Card className='d-flex justify-content-center align-items-justify min-vh-100' style={{width:'80%'}}>
+        <Card.Header className='d-flex justify-content-center align-items-center'>Leave Request Details</Card.Header>
+        <Card.Body style={{marginLeft:'80px', marginRight:'80px'}}>
           <Form>
             <Form.Group as={Row} className="mb-3" controlId="requestId">
               <Form.Label column sm={4}>Request ID</Form.Label>
@@ -68,16 +72,16 @@ const LeaveRequestForm = (props) => {
             <Form.Group as={Row} className="mb-3" controlId="status">
               <Form.Label column sm={4}>Request Status</Form.Label>
               <Col sm={8}>
-                <Form.Control type="text" defaultValue="Pending" readOnly />
+                <Form.Control type="text" defaultValue="Pending" readOnly>{props.status}</Form.Control>
               </Col>
             </Form.Group>
 
             <Row className="mt-4">
               <Col>
-                <Button variant="primary" size="sm" className="w-100">Approve</Button>
+                <Button variant="primary" size="md" className="d-flex justify-content-center align-items-center w-50" style={{margin:'100px'}}>Approve</Button>
               </Col>
               <Col>
-                <Button variant="danger" size="sm" className="w-100" style={{background: '#b861ff'}}>Reject</Button>
+                <Button variant="danger" size="md" className="d-flex justify-content-center align-items-center w-50" style={{background: '#b861ff', margin:'100px'}}>Reject</Button>
               </Col>
             </Row>
           </Form>

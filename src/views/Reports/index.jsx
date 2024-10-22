@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Row, Col, Card, DropdownButton, Dropdown, Form } from 'react-bootstrap';
 import PieChart from '../PieChart';
 
 function Reports() {
@@ -35,6 +35,7 @@ function Reports() {
     { title: 'Working Format : Full Time', icon: 'icon-arrow-down text-c-red', value: 85, class: 'progress-c-theme2' },
     { title: 'Working Format : Part Time', icon: 'icon-arrow-up text-c-green', value: 15, color: 'progress-c-theme' }
   ];
+  
 
   const [selectedItem, setSelectedItem] = useState('');
 
@@ -50,37 +51,7 @@ function Reports() {
 
   return (
     <React.Fragment>
-      <Row>
-        {dashSalesData.map((data, index) => {
-          return (
-            <Col key={index} xl={6} xxl={4}>
-              <Card>
-                <Card.Body>
-                  <h6 className="mb-4">{data.title}</h6>
-                  <div className="row d-flex align-items-center">
-                    <div className="col-9">
-                      <h3 className="f-w-300 d-flex align-items-center m-b-0"></h3>
-                    </div>
-                    <div className="col-3 text-end">
-                      <p className="m-b-0">{data.value}%</p>
-                    </div>
-                  </div>
-                  <div className="progress m-t-30" style={{ height: '7px' }}>
-                    <div
-                      className={`progress-bar ${data.class}`}
-                      role="progressbar"
-                      style={{ width: `${data.value}%` }}
-                      aria-valuenow={data.value}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    />
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          );
-        })}
-      </Row>
+      <h4 className="mb-4">Reports</h4>
 
       <Card>
         <Card.Body>
@@ -111,10 +82,24 @@ function Reports() {
         <Card className="deptChart">
           <Card.Header>{selectedItem || 'Employees by Department'}</Card.Header>
           <Card.Body className="d-flex justify-content-center align-items-center">
-            <Col key={0} md={8} lg={8} xl={6} xxl={6}>
+            <Col key={0} md={6} lg={6} xl={4} xxl={4} className="d-flex justify-content-left align-items-justify">
               <PieChart data={data} />
             </Col>
-            
+
+            <Col key={1} md={6} lg={6} xl={4} xxl={4} className="d-flex justify-content-right align-items-justify">
+              <Form>
+                {data.labels.map((label, index) => (
+                  <Form.Group as={Row} className="mb-3" key={index} controlId={label}>
+                    <Form.Label column sm={4}>{label}</Form.Label>
+                    <Col sm={8}>
+                      <Form.Control type="text" defaultValue={(data.datasets[0].data[index])} readOnly />
+                    </Col>
+                  </Form.Group>
+                ))};
+             
+            </Form>
+            </Col>
+              
           </Card.Body>
         </Card>
       </Row>

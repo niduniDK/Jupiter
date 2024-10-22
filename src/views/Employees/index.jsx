@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Card, Table, Tabs, Tab, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -25,81 +25,6 @@ const employeeDetails = [
 ];
 
 const Employees = () => {
-  const tabContent = (
-    <React.Fragment>
-      <div className="d-flex friendlist-box align-items-center justify-content-center m-b-20">
-        <div className="m-r-10 photo-table flex-shrink-0">
-          <Link to="#">
-            <img className="rounded-circle" style={{ width: '40px' }} src={avatar2} alt="activity-user" />
-          </Link>
-        </div>
-        <div className="flex-grow-1 ms-3">
-          <h6 className="m-0 d-inline">Isurumuni</h6>
-          <span className="float-end d-flex  align-items-center">
-            <i className="fa fa-caret-up f-22 m-r-10 text-c-green" />
-            HR
-          </span>
-        </div>
-      </div>
-      <div className="d-flex friendlist-box align-items-center justify-content-center m-b-20">
-        <div className="m-r-10 photo-table flex-shrink-0">
-          <Link to="#">
-            <img className="rounded-circle" style={{ width: '40px' }} src={avatar2} alt="activity-user" />
-          </Link>
-        </div>
-        <div className="flex-grow-1 ms-3">
-          <h6 className="m-0 d-inline">Bhanuka</h6>
-          <span className="float-end d-flex  align-items-center">
-            <i className="fa fa-caret-up f-22 m-r-10 text-c-green" />
-            QA
-          </span>
-        </div>
-      </div>
-      <div className="d-flex friendlist-box align-items-center justify-content-center m-b-20">
-        <div className="m-r-10 photo-table flex-shrink-0">
-          <Link to="#">
-            <img className="rounded-circle" style={{ width: '40px' }} src={avatar2} alt="activity-user" />
-          </Link>
-        </div>
-        <div className="flex-grow-1 ms-3">
-          <h6 className="m-0 d-inline">Dewmina</h6>
-          <span className="float-end d-flex  align-items-center">
-            <i className="fa fa-caret-down f-22 m-r-10 text-c-red" />
-            QA
-          </span>
-        </div>
-      </div>
-      <div className="d-flex friendlist-box align-items-center justify-content-center m-b-20">
-        <div className="m-r-10 photo-table flex-shrink-0">
-          <Link to="#">
-            <img className="rounded-circle" style={{ width: '40px' }} src={avatar2} alt="activity-user" />
-          </Link>
-        </div>
-        <div className="flex-grow-1 ms-3">
-          <h6 className="m-0 d-inline">Umesha</h6>
-          <span className="float-end d-flex  align-items-center">
-            <i className="fa fa-caret-down f-22 m-r-10 text-c-red" />
-            SE
-          </span>
-        </div>
-      </div>
-      <div className="d-flex friendlist-box align-items-center justify-content-center m-b-20">
-        <div className="m-r-10 photo-table flex-shrink-0">
-          <Link to="#">
-            <img className="rounded-circle" style={{ width: '40px' }} src={avatar1} alt="activity-user" />
-          </Link>
-        </div>
-        <div className="flex-grow-1 ms-3">
-          <h6 className="m-0 d-inline">Niduni</h6>
-          <span className="float-end d-flex  align-items-center">
-            <i className="fa fa-caret-up f-22 m-r-10 text-c-green" />
-            SE
-          </span>
-        </div>
-      </div>
-      
-    </React.Fragment>
-  );
 
   const navigate = useNavigate();
   // Function to view employee details
@@ -108,53 +33,73 @@ const Employees = () => {
     navigate('/profile');
   };
 
+  const [employees, setEmployees] = React.useState([]);
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try{
+        const response = await fetch('*');
+        const data = await response.json();
+        setEmployees(data);
+      }
+      catch(error){
+        console.log('Error');
+      }
+    }
+  })
+
   return (
     <React.Fragment>
-      <Row >
-          <Row>
-            <Col key={0} xl={8}>
-              <Card className="Recent-Users widget-focus-lg">
-                <Card.Header>
-                  <Card.Title as="h5">Employees Under Supervision</Card.Title>
-                </Card.Header>
+      <Card className="Recent-Users widget-focus-lg">
+        <Card.Header>
+          <Card.Title as="h5">Employees Under Supervision</Card.Title>
+        </Card.Header>
 
-                {/* Need to update using the data from the database */}
-                <Card.Body className="px-0 py-2">
-                  <Table responsive hover className="recent-users">
-                    <tbody>
-                      {employeeDetails.map((data, index) => {
-                        
-                        const { employee_id, name, avatar } = data;
-                        return(
-                          <tr className="unread">
-                          <td>
-                            <img className="rounded-circle" style={{ width: '40px' }} src={avatar} alt="activity-user" />
-                          </td>
-                          <td>
-                            <h6 className="mb-1" style={{marginLeft: '200px'}}>{employee_id}</h6>
-                          </td>
-                          <td>
-                            <h6 className="mb-1">{name}</h6>
-                          </td>
-                          <td>
-                            <Button variant="primary" size="sm" style={{marginLeft: '50px'}} onClick={viewEmployee}>View</Button>
-                          </td>
-                          </tr>
-                        )
-                      }
-                        
-                    )}
-
-                    </tbody>
-                  </Table>
-                </Card.Body>
+        {/* Need to update using the data from the database */}
+        <Card.Body className="px-0 py-2">
+          <Table responsive hover className="recent-users">
+            <tbody>
+              <tr className='unread'>
+              <th className="col text-center">
+                <h6 className="mb-1"></h6>
+              </th>
+              <th className="col text-center">
+                <h6 className="mb-1" >ID</h6>
+              </th>
+              <th className="col text-center">
+                <h6 className="mb-1">Name</h6>
+              </th>
+              <th className="col text-center">
+                <h6 className="mb-1"></h6>
+              </th>
+              </tr>
+              {employeeDetails.map((data, index) => {
                 
-              </Card>
-            </Col>
+                const { employee_id, name, avatar } = data;
+                return(
+                  <tr className="unread">
+                  <td>
+                    <img className="rounded-circle" style={{ width: '40px' }} src={avatar} alt="activity-user" />
+                  </td>
+                  <td>
+                    <h6 className="mb-1" style={{marginLeft: '115px'}}>{employee_id}</h6>
+                  </td>
+                  <td>
+                    <h6 className="mb-1" style={{marginLeft:'150px'}}>{name}</h6>
+                  </td>
+                  <td>
+                    <Button variant="primary" size="sm" style={{marginLeft: '225px'}} onClick={viewEmployee}>View</Button>
+                  </td>
+                  </tr>
+                )
+              }
+            )}
 
-          </Row>
+            </tbody>
+          </Table>
+        </Card.Body>
         
-      </Row>
+      </Card>
     </React.Fragment>
   );
 };
