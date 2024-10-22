@@ -4,6 +4,14 @@ import { Row, Col, Card, Button, Form } from 'react-bootstrap';
 const LeaveRequestForm = (props) => {
   return (
     <React.Fragment>
+      <div className="auth-wrapper d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+        <div className="auth-content">
+          <div className="auth-bg">
+            <span className="r" />
+            <span className="r s" />
+            <span className="r s" />
+            <span className="r" />
+          </div>
       <Card className='d-flex justify-content-center align-items-center min-vh-100'>
         <Card.Header>Leave Request Details</Card.Header>
         <Card.Body>
@@ -14,7 +22,7 @@ const LeaveRequestForm = (props) => {
                 <Form.Control type="text" defaultValue="001LA" readOnly />
               </Col>
             </Form.Group>
-
+ 
             <Form.Group as={Row} className="mb-3" controlId="employeeId">
               <Form.Label column sm={4}>Employee ID</Form.Label>
               <Col sm={8}>
@@ -75,6 +83,8 @@ const LeaveRequestForm = (props) => {
           </Form>
         </Card.Body>
       </Card>
+    </div>
+    </div>
     </React.Fragment>
   );
 };
