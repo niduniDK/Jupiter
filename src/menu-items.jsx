@@ -39,7 +39,7 @@ const menuItems = {
           title: 'Log Out',
           type: 'item',
           icon: 'feather icon-power',
-          url: '/app/log-out'
+          url: '/auth/signin-1'
         },
       ]
     },

@@ -111,37 +111,6 @@ const Employees = () => {
   return (
     <React.Fragment>
       <Row >
-        {dashSalesData.map((data, index) => {
-          return (
-            <Col key={index} xl={6} xxl={4}>
-              <Card>
-                <Card.Body>
-                  <h6 className="mb-4">{data.title}</h6>
-                  <div className="row d-flex align-items-center">
-                    <div className="col-9">
-                      <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                      </h3>
-                    </div>
-                    <div className="col-3 text-end">
-                      <p className="m-b-0">{data.value}%</p>
-                    </div>
-                  </div>
-                  <div className="progress m-t-30" style={{ height: '7px' }}>
-                    <div
-                      className={`progress-bar ${data.class}`}
-                      role="progressbar"
-                      style={{ width: `${data.value}%` }}
-                      aria-valuenow={data.value}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    />
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          );
-        })}
-
           <Row>
             <Col key={0} xl={8}>
               <Card className="Recent-Users widget-focus-lg">
@@ -183,21 +152,6 @@ const Employees = () => {
               </Card>
             </Col>
 
-            <Col key={1} xl={4} className="user-activity">
-              <Card>
-              <Tabs defaultActiveKey="celebrations" id="uncontrolled-tab-example">
-                <Tab eventKey="celebrations" title="Celebrations">
-                  {tabContent}
-                </Tab>
-                <Tab eventKey="achievements" title="Achievements">
-                  {tabContent}
-                </Tab>
-                <Tab eventKey="all" title="All">
-                  {tabContent}
-                </Tab>
-              </Tabs>
-            </Card>
-            </Col>
           </Row>
         
       </Row>

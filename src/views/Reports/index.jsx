@@ -104,7 +104,6 @@ function Reports() {
             </DropdownButton>
             </Col>
           </Row>
-          
         </Card.Body>
       </Card>
 

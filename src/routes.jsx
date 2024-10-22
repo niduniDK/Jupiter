@@ -64,8 +64,11 @@ const routes = [
     path: '/leave-request-form',
     element: lazy(() => import('./views/LeaveRequestForm'))
   },
-
-
+  {
+    exact: 'true',
+    path: '/',
+    element: lazy(() => import('./views/auth/signin/SignIn1'))
+  },
 
   // Editing the routes array
 
@@ -73,11 +76,6 @@ const routes = [
     path: '*',
     layout: AdminLayout,
     routes: [
-      {
-        exact: 'true',
-        path: '/',
-        element: lazy(() => import('./views/auth/signin/SignIn1'))
-      },
       {
         exact: 'true',
         path: '/app/dashboard/default',
