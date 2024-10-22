@@ -15,20 +15,19 @@ const LeaveRequestForm = (props) => {
             <span className="r s" />
             <span className="r" />
           </div>
-    <Row>
-        {/* <Col>
-            <Card>
-                <Card.Header>Employee</Card.Header>
-                <Card.Body>
-                <img className="rounded-circle" style={{ width: '200px' }} src={avatar1} alt="activity-user" />
-                </Card.Body>
-            </Card>
-        </Col> */}
+   
 
-        <Col>
         <Card className="borderless text-center" lg={6} md={12} style={{width:'200%'}}>
         <Card.Header>Employee Profile</Card.Header>
         <Row>
+            <Col>
+                <Card className="borderless text-left">
+                    <Card.Header>Employee</Card.Header>
+                    <Card.Body>
+                    <img className="rounded-circle" style={{ width: '200px' }} src={avatar1} alt="activity-user" />
+                    </Card.Body>
+                </Card>
+            </Col>
             <Col lg={6} md={12}>
                 <Card.Body id='card-1'>
                     <Form>
@@ -67,7 +66,7 @@ const LeaveRequestForm = (props) => {
                     </Form>
                 </Card.Body>
             </Col>
-            <Col lg={6} md={12}>
+            <Col lg={12} md={12}>
                 <Card.Body id='card-2'>
                     <Form style={{width: '80%', height: 'auto'}}>
                         <Form.Group as={Row} className="mb-3" controlId="gender">
@@ -160,10 +159,7 @@ const LeaveRequestForm = (props) => {
 
             </Col>
         </Row>
-      </Card>
-        </Col>
-    </Row>
-    
+      </Card>  
 
       </div>
     </div>
