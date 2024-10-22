@@ -30,9 +30,10 @@ const leaveRequestDetails = [
 const LeaveApplications = () => {
   const navigate = useNavigate();
 
-  const viewLeaveRequest = (request_id) => {
+  const viewLeaveRequest = (/*request_id*/) => {
     console.log("Viewed");
-    navigate('/leave-request-form/${request_id}');
+    //navigate('/leave-request-form/${request_id}');
+    navigate('/leave-request-form');
   }
 
   const [leaveRequest,setLeaveRequest] = React.useState([]);
