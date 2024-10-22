@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Card, Table, Tabs, Tab, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -26,20 +26,28 @@ const leaveRequestDetails = [
   { request_id: '111', employee_id : '001A', request_date: '12/12/2021', leave_start_date: '13/12/2012', period_of_absence: '2', reason: 'Sick Leave', type_of_leave: 'Annual', status: 'Pending' },
 ];
 
-const acceptLeaveRequest = () => {
-  console.log("Accepted");
-}
-
-const rejecttLeaveRequest = () => {
-  console.log("Rejected");
-}
 
 const LeaveApplications = () => {
   const navigate = useNavigate();
-  const viewLeaveRequest = () => {
+
+  const viewLeaveRequest = (request_id) => {
     console.log("Viewed");
-    navigate('/leave-request-form');
+    navigate('/leave-request-form/${request_id}');
   }
+
+  const [leaveRequest,setLeaveRequest] = React.useState([]);
+
+  useEffect(() => {
+    const fetchLeaveRequest = async () => {
+      try{
+        const response = await fetch('*');
+        const data = await response.json();
+        setLeaveRequest(data);
+      }
+      catch(error){
+        console.log('Error');
+      }
+  }});
 
   return (
     <React.Fragment>
@@ -74,7 +82,7 @@ const LeaveApplications = () => {
 
                 {leaveRequestDetails.map((data, index) => {
                     
-                  const { request_id, employee_id, request_date, leave_start_date, period_of_absence, reason, type_of_leave, status } = data;
+                  const { request_id, employee_id, leave_start_date, status } = data;
                     return(
                       <tr className="unread">
                         <td>
@@ -92,7 +100,7 @@ const LeaveApplications = () => {
                         <h6 className="mb-1">{status}</h6>
                       </td>
                       <td>
-                        <Button variant="primary" size="sm" style={{marginLeft: '50px', background: '#47b9ff'}} onClick={viewLeaveRequest}>View</Button>
+                        <Button variant="primary" size="sm" style={{marginLeft: '50px', background: '#47b9ff'}} onClick={() => viewLeaveRequest({request_id})}>View</Button>
                       </td>
                       </tr>
                     )

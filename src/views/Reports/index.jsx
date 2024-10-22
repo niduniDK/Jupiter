@@ -30,12 +30,6 @@ function Reports() {
     ],
   };
 
-  const dashSalesData = [
-    { title: 'On Leave', icon: 'icon-arrow-up text-c-green', value: 13, class: 'progress-c-theme' },
-    { title: 'Working Format : Full Time', icon: 'icon-arrow-down text-c-red', value: 85, class: 'progress-c-theme2' },
-    { title: 'Working Format : Part Time', icon: 'icon-arrow-up text-c-green', value: 15, color: 'progress-c-theme' }
-  ];
-  
 
   const [selectedItem, setSelectedItem] = useState('');
 
@@ -71,7 +65,7 @@ function Reports() {
               <Dropdown.Item eventKey="Roles">Roles</Dropdown.Item>
               <Dropdown.Item eventKey="Employees by Pay Grade">Employees by Pay Grade</Dropdown.Item>
               <Dropdown.Item eventKey="Leaves given within last month">Leaves given within last month</Dropdown.Item>
-              <Dropdown.Item eventKey="Employees by gender">Employees by gender</Dropdown.Item>
+              
             </DropdownButton>
             </Col>
           </Row>
