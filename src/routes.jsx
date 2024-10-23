@@ -66,6 +66,11 @@ const routes = [
   },
   {
     exact: 'true',
+    path: '/leave-request-form/:request_id',
+    element: lazy(() => import('./views/LeaveRequestForm'))
+  },
+  {
+    exact: 'true',
     path: '/',
     element: lazy(() => import('./views/auth/signin/SignIn1'))
   },
