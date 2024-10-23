@@ -5,6 +5,39 @@ import avatar2 from '../../assets/images/user/avatar-2.jpg';
 import avatar3 from '../../assets/images/user/avatar-3.jpg';
 
 const Profile = (props) => {
+
+    /*
+        Employee Profile
+            Employee ID
+            First Name
+            Last Name
+            Birthday
+            Gender
+            Marital Status
+            No. of dependents
+            Address
+            Contact Number
+
+        Emergency Contact Details
+            First Name
+            Last Name
+            Address
+            Emergency Contact Number
+
+        Employee Details
+            Job Title
+            Business Email
+            Department
+            Branch
+            Supervisor ID
+            
+        Remaining Leave Count
+            Annual Leaves
+            Casual Leaves
+            No-pay Leaves
+            Maternity Leaves
+     */
+
   return (
     <React.Fragment>
     <div className="auth-wrapper d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>

@@ -7,14 +7,9 @@ import avatar2 from '../../assets/images/user/avatar-2.jpg';
 import avatar3 from '../../assets/images/user/avatar-3.jpg';
 import LeaveRequestForm from 'views/LeaveRequestForm';
 
-//
-
-const dashSalesData = [
-  { title: 'On Leave', icon: 'icon-arrow-up text-c-green', value: 13, class: 'progress-c-theme' },
-  { title: 'Working Format : Full Time', icon: 'icon-arrow-down text-c-red', value: 85, class: 'progress-c-theme2' },
-  { title: 'Working Format : Part Time', icon: 'icon-arrow-up text-c-green', value: 15, color: 'progress-c-theme' }
-];
-
+/*
+  Get all Leave requests within the last month from the database
+ */
 const leaveRequestDetails = [
   { request_id: '111', employee_id : '001A', request_date: '12/12/2021', leave_start_date: '13/12/2012', period_of_absence: '2', reason: 'Sick Leave', type_of_leave: 'Annual', status: 'Pending' },
   { request_id: '111', employee_id : '001A', request_date: '12/12/2021', leave_start_date: '13/12/2012', period_of_absence: '2', reason: 'Sick Leave', type_of_leave: 'Annual', status: 'Pending' },
@@ -30,10 +25,14 @@ const leaveRequestDetails = [
 const LeaveApplications = () => {
   const navigate = useNavigate();
 
+
+  /* 
+    Get leave request with the given request_id
+   */
   const viewLeaveRequest = (/*request_id*/) => {
     console.log("Viewed");
     //navigate('/leave-request-form/${request_id}');
-    navigate('/leave-request-form');
+     navigate('/leave-request-form');
   }
 
   const [leaveRequest,setLeaveRequest] = React.useState([]);
@@ -52,7 +51,7 @@ const LeaveApplications = () => {
 
   return (
     <React.Fragment>
-      <Row >
+      <Row>
           <Card className="Recent-Users widget-focus-lg">
             <Card.Header>
               <Card.Title as="h5">Leave Applications</Card.Title>
@@ -101,7 +100,7 @@ const LeaveApplications = () => {
                         <h6 className="mb-1">{status}</h6>
                       </td>
                       <td>
-                        <Button variant="primary" size="sm" style={{marginLeft: '50px', background: '#47b9ff'}} onClick={() => viewLeaveRequest({request_id})}>View</Button>
+                        <Button variant="primary" size="sm" style={{marginLeft: '50px', background: '#47b9ff'}} onClick={viewLeaveRequest}>View</Button>
                       </td>
                       </tr>
                     )

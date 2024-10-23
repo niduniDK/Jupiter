@@ -3,6 +3,25 @@ import { Row, Col, Card, DropdownButton, Dropdown, Form } from 'react-bootstrap'
 import PieChart from '../PieChart';
 
 function Reports() {
+  
+  /*
+    Employee by department
+      data -> employee count of the particular department
+      labels -> department names
+
+    Employees by Job Title
+      data -> employee count of the particular job title
+      labels -> job titles
+    
+    Employees by Pay Grade
+      data -> employee count of the particular pay grade
+      labels -> pay grades
+    
+    **Leaves given within last month
+      data -> leave count of the last month given by a particular department
+      labels -> department names
+  */
+
   const data = {
     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
     datasets: [

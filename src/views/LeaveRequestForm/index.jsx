@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
+
 const LeaveRequestForm = (props) => {
   const [status, setStatus] = useState(props.status); 
   const {request_id} = useParams();
@@ -15,7 +16,7 @@ const LeaveRequestForm = (props) => {
   return (
     <React.Fragment>
       <div className="auth-wrapper d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-        <div className="auth-content d-flex justify-content-center align-items-center" style={{ width: '200%' }}>
+        <div className="auth-content d-flex justify-content-center align-items-center" style={{ width: '120%' }}>
           <div className="auth-bg">
             <span className="r" />
             <span className="r s" />

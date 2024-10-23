@@ -7,21 +7,13 @@ import avatar2 from '../../assets/images/user/avatar-2.jpg';
 import avatar3 from '../../assets/images/user/avatar-3.jpg';
 import Profile from 'views/Profile';
 
-//
-
-const dashSalesData = [
-  { title: 'On Leave', icon: 'icon-arrow-up text-c-green', value: 13, class: 'progress-c-theme' },
-  { title: 'Working Format : Full Time', icon: 'icon-arrow-down text-c-red', value: 85, class: 'progress-c-theme2' },
-  { title: 'Working Format : Part Time', icon: 'icon-arrow-up text-c-green', value: 15, color: 'progress-c-theme' }
-];
-
 //Array of employee details
 const employeeDetails = [
-  { employee_id: '001A', name: 'Niduni', avatar: avatar1 },
-  { employee_id: '002A', name: 'Isurumuni', avatar: avatar2 },
-  { employee_id: '003A', name: 'Bhanuka', avatar: avatar2 },
-  { employee_id: '004A', name: 'Umesha', avatar: avatar2 },
-  { employee_id: '005A', name: 'Dewmina', avatar: avatar2 },
+  { employee_id: '001A', name: 'Niduni', business_email: 'niduni@jupiter.com' },
+  { employee_id: '002A', name: 'Isurumuni', business_email: 'isurumuni@jupiter.com' },
+  { employee_id: '003A', name: 'Bhanuka', business_email:'bhanuka@jupiter.com' },
+  { employee_id: '004A', name: 'Umesha', business_email: 'umesha@jupiter.com' },
+  { employee_id: '005A', name: 'Dewmina', business_email: 'dewmina@jupiter.com' },
 ];
 
 const Employees = () => {
@@ -70,25 +62,31 @@ const Employees = () => {
                 <h6 className="mb-1">Name</h6>
               </th>
               <th className="col text-center">
+                <h6 className="mb-1">Business Email</h6>
+              </th>
+              <th className="col text-center">
                 <h6 className="mb-1"></h6>
               </th>
               </tr>
               {employeeDetails.map((data, index) => {
                 
-                const { employee_id, name, avatar } = data;
+                const { employee_id, name, business_email } = data;
                 return(
                   <tr className="unread">
                   <td>
-                    <img className="rounded-circle" style={{ width: '40px' }} src={avatar} alt="activity-user" />
+                    <img className="rounded-circle" style={{ width: '40px' }} src={avatar2} alt="activity-user" />
                   </td>
                   <td>
-                    <h6 className="mb-1" style={{marginLeft: '115px'}}>{employee_id}</h6>
+                    <h6 className="mb-1" style={{marginLeft: '80px'}}>{employee_id}</h6>
                   </td>
                   <td>
-                    <h6 className="mb-1" style={{marginLeft:'150px'}}>{name}</h6>
+                    <h6 className="mb-1" style={{marginLeft:'100px'}}>{name}</h6>
                   </td>
                   <td>
-                    <Button variant="primary" size="sm" style={{marginLeft: '225px'}} onClick={viewEmployee}>View</Button>
+                    <h6 className="mb-1" style={{marginLeft:'130px'}}>{business_email}</h6>
+                  </td>
+                  <td>
+                    <Button variant="primary" size="sm" style={{marginLeft: '100px'}} onClick={viewEmployee}>View</Button>
                   </td>
                   </tr>
                 )
