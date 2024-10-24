@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Table, Tabs, Tab, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -35,19 +35,9 @@ const LeaveApplications = () => {
      navigate('/leave-request-form');
   }
 
-  const [leaveRequest,setLeaveRequest] = React.useState([]);
+  const [leaveRequests,setLeaveRequests] = useState();
 
-  useEffect(() => {
-    const fetchLeaveRequest = async () => {
-      try{
-        const response = await fetch('*');
-        const data = await response.json();
-        setLeaveRequest(data);
-      }
-      catch(error){
-        console.log('Error');
-      }
-  }});
+  
 
   return (
     <React.Fragment>
