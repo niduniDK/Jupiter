@@ -11,7 +11,9 @@ const JWTLogin = () => {
   };
 
   return (
-    <Formik
+    <div className='align-item-center justify-content-center'>
+      
+      <Formik
       initialValues={{
         email: 'User-name',
         password: 'password',
@@ -60,6 +62,8 @@ const JWTLogin = () => {
         </form>
       )}
     </Formik>
+    </div>
+    
   );
 };
 

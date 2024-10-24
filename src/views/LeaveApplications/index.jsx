@@ -25,7 +25,6 @@ const leaveRequestDetails = [
 const LeaveApplications = () => {
   const navigate = useNavigate();
 
-
   /* 
     Get leave request with the given request_id
    */
@@ -35,9 +34,7 @@ const LeaveApplications = () => {
      navigate('/leave-request-form');
   }
 
-  const [leaveRequests,setLeaveRequests] = useState();
-
-  
+ 
 
   return (
     <React.Fragment>
