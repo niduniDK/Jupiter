@@ -52,11 +52,11 @@ const routes = [
     exact: 'true',
     path: '/dashboard/default',
     layout: AdminLayout,
-    element: lazy(() => import('./views/dashboard'))
+    element: lazy(() => import('./views/dashboard/supervisorDashboard'))
   },
   {
     exact: 'true',
-    path: '/profile',
+    path: '/profile/:employee_id',
     element: lazy(() => import('./views/Profile'))
   },
   {
@@ -84,7 +84,7 @@ const routes = [
       {
         exact: 'true',
         path: '/app/dashboard/default',
-        element: lazy(() => import('./views/dashboard'))
+        element: lazy(() => import('./views/dashboard/supervisorDashboard'))
       },
       {
         exact: 'true',
@@ -95,6 +95,11 @@ const routes = [
         exact: 'true',
         path: '/app/leave-applications',
         element: lazy(() => import('./views/LeaveApplications'))
+      },
+      {
+        exact: 'true',
+        path: '/app/leave-form',
+        element: lazy(() => import('./views/LeaveForm'))
       },
       {
         exact: 'true',

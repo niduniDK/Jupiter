@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Row, Col, Card, Table, Tabs, Tab, ListGroup, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import ChatList from '../../layouts/AdminLayout/NavBar/NavRight/ChatList';
+import { useNavigate } from 'react-router-dom';
+
 
 
 import avatar1 from '../../assets/images/user/avatar-1.jpg';
+import avatar2 from '../../assets/images/user/avatar-2.jpg';
 
-const dashSalesData = [
+let initialApprovalList = null;
+
+let dashSalesData = [
   { title: 'On Leave', amount: '201', value: 10 },
   { title: 'Working format : Full Time', amount: '589',  value: 50},
   { title: 'Working format : Part Time', amount: '105',  value: 90}
 ];
 
-let initialApprovalList = [
-  { name: 'Bhanuka Botheju', type: 'Annual', date: '11 May' },
-  { name: 'Isurumuni', type: 'Annual', date: '13 May' },
-  { name: 'Umesh Jayakodi', type: 'Annual', date: '20 May' },
-  { name: 'Niduni Kasige', type: 'Annual', date: '21 May' },
-  { name: 'Devmina', type: 'Annual', date: '22 July' }
+ initialApprovalList = [
+  {leave_request_id: '001A', employee_id: '00123',
+    request_date: '2024-10-2',
+   leave_start_date: '2024-10-3', period_of_absence: '3',
+   reason_for_absence: 'Medical', type_of_leave: 'casual',
+   request_status: 'p'},
+   {leave_request_id: '001B', employee_id: '00153',
+    request_date: '2024-10-8',
+   leave_start_date: '2024-10-12', period_of_absence: '5',
+   reason_for_absence: 'Medical', type_of_leave: 'casual',
+   request_status: 'p'}
 ];
 
 let birthdaylist = [
@@ -27,19 +36,84 @@ let birthdaylist = [
   { name: 'Eshin Menusha', dept: 'HR' }
 ];
 
-const DashDefault = () => {
+const DashDefault = () => { 
+  
+  useEffect(() => {
+    getdelaisfrombackend();
+  }, []);
+
+  const getdelaisfrombackend = async () => {
+    //getdashSalesData();
+    getApprovalList();
+    //getBirthdayList();
+  }
+
+  const getApprovalList = async () => {
+    console.log("this is token")
+    console.log(localStorage.getItem('token'));
+    try {
+      // Fetch data from the backend
+      const response = await fetch('http://localhost:8000/supervisor/leave_requests', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          // Include token for authentication, if required
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+  
+      // If the response is okay, convert it to JSON
+      if (response.ok) {
+        const data = await response.json();
+        // Use the fetched data or set the initialApprovalList if data is empty
+        const leaveRequests = data.length ? data : initialApprovalList;
+        console.log(leaveRequests);
+        if(leaveRequests=="null"){
+          console.log("No data");
+        }
+        else{
+          initialApprovalList = leaveRequests;
+        }
+
+        // Update state or UI with fetched data
+        // Example: setLeaveRequests(leaveRequests);
+      } else {
+        // Handle errors (e.g., 404, 403, etc.)
+        console.error('Failed to fetch leave requests:', response.status);
+      }
+    } catch (error) {
+      // Catch any network errors
+      console.error('Error fetching leave requests:', error);
+    } finally {
+      // Optionally, handle cleanup or UI state changes here
+    }
+  };
+  
+  const getdashSalesData = async () =>{
+    //
+  }
+  
+
   const [listOpen, setListOpen] = useState(false);
   const [approvalList, setApprovalList] = useState(initialApprovalList);
+  const navigate = useNavigate();
 
-  const handleApprove = (index) => {
+  const handleApprove = (index,name) => {
+    /*
     const updatedList = approvalList.filter((_, i) => i !== index); // Remove the approved item from the list
     setApprovalList(updatedList);
+    */
+    navigate('./leave-request-form', {
+      state: { details_list: initialApprovalList[index] }
+    });       
   };
 
-  const handleReject = (index) => {
+  const handleReject = (index,name) => {
+    /*
     const updatedList = approvalList.filter((_, i) => i !== index); // Remove the rejected item from the list
     setApprovalList(updatedList);
-    
+    */
+    navigate('./leave-request-form');
   };
 
   let tabcontent = (
@@ -62,6 +136,8 @@ const DashDefault = () => {
       ))}
     </React.Fragment>
   );
+
+
 
   return (
     <React.Fragment>
@@ -108,34 +184,29 @@ const DashDefault = () => {
                   {approvalList.map((data, index) => (
                     <tr key={index} className='unread'>
                       <td>
-                        <img className="rounded-circle" style={{ width: '40px' }} src={avatar1} alt="activity-user" />
+                        <img className="rounded-circle" style={{ width: '40px' }} src={data.gender === 'M' ? avatar2 : avatar1}  alt="activity-user" />
                       </td>
                       <td>
-                      <h6 className="mb-1" style={{cursor:'pointer'}} onClick={() => setListOpen(true)}>{data.name}</h6>  
-                      <ChatList 
-                        listOpen={listOpen} 
-                        closed={() => setListOpen(false)} 
-                        name={data.name}  // Passing data.name to ChatList as a prop
-                      />
-
-                        <p className="m-0">{data.type}</p>
+                      <h6 className="mb-1" style={{cursor:'pointer'}}>{data.employee_id}</h6>  
+                      
+                        <p className="m-0">{data.type_of_leave}</p>
                       </td>
                       <td>
                         <h6 className="text-muted">
                           <i className="fa fa-circle text-c-green f-10 m-r-15" />
-                          {data.date}
+                          {data.leave_start_date}
                         </h6>
                       </td>
                       <td>
                         <button
                           className="label theme-bg2 text-white f-12"
-                          onClick={() => handleReject(index)}
+                          onClick={() => handleReject(index,data.name)}
                         >
                           Reject
                         </button>
                         <button
                           className="label theme-bg text-white f-12"
-                          onClick={() => handleApprove(index)}
+                          onClick={() => handleApprove(index,data.name)}
                         >
                           Approve
                         </button>

@@ -28,6 +28,13 @@ const menuItems = {
           url: '/app/leave-applications'
         },
         {
+          id: 'leave-form',
+          title: 'Leave Form',
+          type: 'item',
+          icon: 'feather icon-book',
+          url: '/app/leave-form'
+        },
+        {
           id: 'reports',
           title: 'Reports',
           type: 'item',

@@ -13,27 +13,6 @@ import avatar4 from '../../../../assets/images/user/avatar-4.jpg';
 const NavRight = () => {
   const [listOpen, setListOpen] = useState(false);
 
-  const notiData = [
-    {
-      name: 'Joseph William',
-      image: avatar2,
-      details: 'Purchase New Theme and make payment',
-      activity: '30 min'
-    },
-    {
-      name: 'Sara Soudein',
-      image: avatar3,
-      details: 'currently login',
-      activity: '30 min'
-    },
-    {
-      name: 'Suzen',
-      image: avatar4,
-      details: 'Purchase New Theme and make payment',
-      activity: 'yesterday'
-    }
-  ];
-
   return (
     <React.Fragment>
       <ListGroup as="ul" bsPrefix=" " className="navbar-nav ml-auto" id="navbar-right">
@@ -45,8 +24,10 @@ const NavRight = () => {
             </Dropdown.Toggle>
             <Dropdown.Menu align="end" className="profile-notification">
               <div className="pro-head">
+
                 <img src={avatar1} className="img-radius" alt="User Profile" />
                 <span>John Doe</span>
+
                 <Link to="/auth/signin-1" className="dud-logout" title="Logout">
                   <i className="feather icon-log-out" />
                 </Link>
