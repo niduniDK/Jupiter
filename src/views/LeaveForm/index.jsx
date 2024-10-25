@@ -2,10 +2,8 @@ import React, {useState} from 'react';
 import { useLocation } from 'react-router-dom';
 import { Row, Col, Card, Button, Form, FormGroup } from 'react-bootstrap';
 
-const LeaveForm = ( ) => {
-  const [requestId, setRequestId] = useState('');
+const LeaveForm = () => {
   const [employeeId, setEmployeeId] = useState('');
-  const [requestDate, setRequestDate] = useState('');
   const [leaveStartDate, setLeaveStartDate] = useState('');
   const [periodOfAbsence, setPeriodOfAbsence] = useState('');
   const [reason, setReason] = useState('');
@@ -15,13 +13,47 @@ const LeaveForm = ( ) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted');
-    console.log(requestId, employeeId, requestDate, leaveStartDate, periodOfAbsence, reason, typeOfLeave, status);
-  };
+    console.log(data);
+
+    fetch('http://127.0.0.1:8000/leave/request', 
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        emplyee_id: employeeId,
+        leave_start_date: leaveStartDate,
+        period_of_absence: periodOfAbsence,
+        reason_for_absence: reason,
+        type_of_leave: typeOfLeave,
+        request_status: status,
+      })
+    })
+    .then((response) => {
+        if (response.ok) {
+          console.log('Form submitted successfully');
+          setEmployeeId('');
+          setLeaveStartDate('');
+          setPeriodOfAbsence('');
+          setReason('');
+          setTypeOfLeave('');
+          setStatus('Pending'); 
+        } else {
+          console.error('Failed to submit the form');
+          console.log('error');
+        }
+      })
+      .catch((error) => {
+        console.log('error');
+        console.error('Error submitting the form:', error);
+      });
+    console.log(employeeId, leaveStartDate, periodOfAbsence, reason, typeOfLeave, status);
+
+};
 
   const data = {
-    requestId,
     employeeId,
-    requestDate,
     leaveStartDate,
     periodOfAbsence,
     reason,
@@ -35,25 +67,11 @@ const LeaveForm = ( ) => {
             <Card.Header style={{fontSize: '30px'}}>Leave Application</Card.Header>
             <Card.Body>
                 <Form style={{width:'450px'}}>
-
-                    <Form.Group as={Row} className="mb-3" controlId="requestId">
-                    <Form.Label column sm={4}>Request ID</Form.Label>
-                    <Col sm={8}>
-                        <Form.Control type="text" defaultValue='001' readOnly/>
-                    </Col>
-                    </Form.Group>
         
                     <Form.Group as={Row} className="mb-3" controlId="employeeId">
                     <Form.Label column sm={4}>Employee ID</Form.Label>
                     <Col sm={8}>
                         <Form.Control type="text" value={employeeId} onChange={(e) => setEmployeeId(e.target.value)}/>
-                    </Col>
-                    </Form.Group>
-
-                    <Form.Group as={Row} className="mb-3" controlId="requestDate">
-                    <Form.Label column sm={4}>Request Date</Form.Label>
-                    <Col sm={8}>
-                        <Form.Control type="date" value={requestDate} onChange={(e) => setRequestDate(e.target.value)}/>
                     </Col>
                     </Form.Group>
 
@@ -88,7 +106,7 @@ const LeaveForm = ( ) => {
                     <Form.Group as={Row} className="mb-3" controlId="status">
                     <Form.Label column sm={4}>Request Status</Form.Label>
                     <Col sm={8}>
-                        <Form.Control type="text" defaultValue="Pending" onChange={(e) => setStatus(e.target.value)}/>
+                        <Form.Control type="text" defaultValue="Pending" onChange={(e) => setStatus(e.target.value)} readOnly/>
                     </Col>
                     </Form.Group>
                     
