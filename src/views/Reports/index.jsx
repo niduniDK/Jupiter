@@ -1,26 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, DropdownButton, Dropdown, Form } from 'react-bootstrap';
 import PieChart from '../PieChart';
 
 function Reports() {
-  
-  /*
-    Employee by department
-      data -> employee count of the particular department
-      labels -> department names
-
-    Employees by Job Title
-      data -> employee count of the particular job title
-      labels -> job titles
-    
-    Employees by Pay Grade
-      data -> employee count of the particular pay grade
-      labels -> pay grades
-    
-    **Leaves given within last month
-      data -> leave count of the last month given by a particular department
-      labels -> department names
-  */
 
   const data = {
     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
@@ -51,6 +33,51 @@ function Reports() {
 
 
   const [selectedItem, setSelectedItem] = useState('');
+  const [chartData, setChartData] = useState(data);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('*'); // Update with your API endpoint
+        const data = await response.json();
+
+        const labels = data.labels;
+        const values = data.values;
+
+        // Update chart data with fetched data
+        setChartData({
+          labels: labels,
+          datasets: [
+            {
+              label: 'Dynamic Votes', // You can set this dynamically as well
+              data: values,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1,
+            },
+          ],
+        });
+      } catch (error) {
+        console.error('Error fetching chart data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSelect = (eventKey) => {
     setSelectedItem(eventKey);
@@ -96,7 +123,7 @@ function Reports() {
           <Card.Header>{selectedItem || 'Employees by Department'}</Card.Header>
           <Card.Body className="d-flex justify-content-center align-items-center">
             <Col key={0} md={6} lg={6} xl={4} xxl={4} className="d-flex justify-content-left align-items-justify">
-              <PieChart data={data} />
+              <PieChart data={chartData} />
             </Col>
 
             <Col key={1} md={6} lg={6} xl={4} xxl={4} className="d-flex justify-content-right align-items-justify">
@@ -105,7 +132,7 @@ function Reports() {
                   <Form.Group as={Row} className="mb-3" key={index} controlId={label}>
                     <Form.Label column sm={4}>{label}</Form.Label>
                     <Col sm={8}>
-                      <Form.Control type="text" defaultValue={(data.datasets[0].data[index])} readOnly />
+                      <Form.Control type="text" defaultValue={(chartData.datasets[0].data[index])} readOnly />
                     </Col>
                   </Form.Group>
                 ))};
