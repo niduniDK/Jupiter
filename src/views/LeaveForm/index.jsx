@@ -20,7 +20,7 @@ const LeaveForm = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      },
+      }, 
       body: JSON.stringify({
         emplyee_id: employeeId,
         leave_start_date: leaveStartDate,
