@@ -27,43 +27,6 @@ const Signin1 = () => {
             <span className="r" />
           </div>
 
-          <h1
-            style={{
-              background: 'linear-gradient(90deg, #ff7e5f, #feb47b, #86a8e7, #91eae4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              textFillColor: 'transparent',
-              fontSize: '4rem',
-              fontWeight: 900,
-              letterSpacing: '5px',
-              textShadow: '2px 2px 6px rgba(0, 0, 0, 0.3)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              minHeight: '60vh',
-              textAlign: 'center',
-              opacity: isAnimated ? 1 : 0,
-              transform: isAnimated ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'opacity 2.5s ease-in-out, transform 2.5s ease-in-out',
-            }}
-          >
-            JUPITER
-          </h1>
-
-          <style>{`
-            @keyframes fadeIn {
-              0% {
-                opacity: 0;
-                transform: translateY(30px);
-              }
-              100% {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-          `}</style>
-
           <Card className="borderless text-center align-item-center justify-content-center" style={{width: '500px', marginLeft:'500px'}}>
             <Card.Body>
               <div className="mb-4">

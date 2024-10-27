@@ -1,24 +1,70 @@
 import React from 'react';
 import { Row, Col, Alert, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
-import DashDefault from 'views/Employees';
 import { useNavigate } from 'react-router-dom';
 
 const JWTLogin = () => {
   const navigate = useNavigate();
-  const Signin = () => {
-    navigate('/dashboard/default', { replace: true });
+
+  // Function to handle login
+  const handleLogin = async (values, { setSubmitting, setErrors }) => {
+    try {
+      // Send POST request to FastAPI backend
+      const response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: values.email, // Backend expects 'username'
+          password: values.password,
+          role:values.role
+        }),
+      });
+
+      // Parse the response
+      const data = await response.json();
+
+      // Handle error if login fails
+      if (!response.ok) {
+        throw new Error(data.detail || 'Invalid Username or Password');
+      }
+
+      // Store the token in localStorage on successful login
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username);
+
+      // Redirect user to the dashboard after login
+
+      {/*
+      if(data.type == 'Admin'){
+        navigate('/Admin', { replace: true });
+      }
+      else if(data.type == 'Supivisor'){
+        navigate('/Supivisor',{replace: true});
+      }
+      else if('Employee'){
+        navigate('/Employee',{replace: true});
+      }
+      */}
+
+      navigate('/app/supervisorDashboard', { replace: true });
+
+    } catch (error) {
+      setErrors({ submit: error.message }); // Show error to the user
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <div className='align-item-center justify-content-center'>
-      
-      <Formik
+    <Formik
       initialValues={{
-        email: 'User-name',
-        password: 'password',
-        submit: true
+        email: 'Username', // Replace with empty string if needed
+        password: 'Password', 
+        submit: true,
       }}
+      onSubmit={handleLogin} // Call handleLogin on form submission
     >
       {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
         <form noValidate onSubmit={handleSubmit}>
@@ -48,13 +94,20 @@ const JWTLogin = () => {
 
           {errors.submit && (
             <Col sm={12}>
-              <Alert>{errors.submit}</Alert>
+              <Alert variant="danger">{errors.submit}</Alert>
             </Col>
           )}
 
           <Row>
             <Col mt={2}>
-              <Button className="btn-block mb-4" color="primary" disabled={isSubmitting} size="large" type="submit" variant="primary" onClick={Signin}>
+              <Button
+                className="btn-block mb-4"
+                color="primary"
+                disabled={isSubmitting}
+                size="large"
+                type="submit"
+                variant="primary"
+              >
                 Signin
               </Button>
             </Col>
@@ -62,8 +115,6 @@ const JWTLogin = () => {
         </form>
       )}
     </Formik>
-    </div>
-    
   );
 };
 

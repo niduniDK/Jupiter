@@ -26,7 +26,7 @@ const NavRight = () => {
               <div className="pro-head">
 
                 <img src={avatar1} className="img-radius" alt="User Profile" />
-                <span>John Doe</span>
+                <span>{localStorage.getItem('username')}</span>
 
                 <Link to="/auth/signin-1" className="dud-logout" title="Logout">
                   <i className="feather icon-log-out" />

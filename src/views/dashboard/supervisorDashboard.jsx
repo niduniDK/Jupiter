@@ -49,7 +49,6 @@ const DashDefault = () => {
   }
 
   const getApprovalList = async () => {
-    console.log("this is token")
     console.log(localStorage.getItem('token'));
     try {
       // Fetch data from the backend
@@ -84,9 +83,7 @@ const DashDefault = () => {
     } catch (error) {
       // Catch any network errors
       console.error('Error fetching leave requests:', error);
-    } finally {
-      // Optionally, handle cleanup or UI state changes here
-    }
+    } 
   };
   
   const getdashSalesData = async () =>{

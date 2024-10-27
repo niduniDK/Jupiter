@@ -32,61 +32,74 @@ function Reports() {
   };
 
 
-  const [selectedItem, setSelectedItem] = useState('');
+  const [selectedItem, setSelectedItem] = useState('Employees by Department');
   const [chartData, setChartData] = useState(data);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('*'); // Update with your API endpoint
-        const data = await response.json();
-
-        const labels = data.labels;
-        const values = data.values;
-
-        // Update chart data with fetched data
-        setChartData({
-          labels: labels,
-          datasets: [
-            {
-              label: 'Dynamic Votes', // You can set this dynamically as well
-              data: values,
-              backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1,
-            },
-          ],
-        });
-      } catch (error) {
-        console.error('Error fetching chart data:', error);
-      }
-    };
-
-    fetchData();
+    handleSelect(selectedItem);
   }, []);
 
-  const handleSelect = (eventKey) => {
+  const handleSelect = async (eventKey) => {
     setSelectedItem(eventKey);
+    try{
+      if (eventKey === 'Employees by Department') {
+        console.log('Fetch Employees by Department Data');
+        const response = await fetch('http://127.0.0.1:8000/');  // Need to be updated with API endpoint
 
-    if (eventKey === 'Employees by Department') {
-      console.log('Fetch Employees by Department Data');
-    } else if (eventKey === 'Roles') {
-      console.log('Fetch Roles Data');
+      } else if (eventKey === 'Roles') {
+        console.log('Fetch Roles Data');
+        const response = await fetch('http://127.0.0.1:8000/');  // Need to be updated with API endpoint
+
+      } else if (eventKey === 'Employees by Pay Grade') {
+        console.log('Fetch Employees by Pay Grade Data');
+        const response = await fetch('http://127.0.0.1:8000/');  // Need to be updated with API endpoint
+
+      } else if (eventKey === 'Leaves given within last month') {
+        console.log('Fetch Leaves given within last month Data');
+        const response = await fetch('http://127.0.0.1:8000/');  // Need to be updated with API endpoint
+
+      }
+      else if (eventKey === 'Employees by Gender') {
+        console.log('Fetch Employees by Gender');
+        const response = await fetch('http://127.0.0.1:8000/');  // Need to be updated with API endpoint
+
+      }
+
+      const data = await response.json();
+      const labels = data.labels;
+      const values = data.values;
+
+      setChartData({
+        labels: labels,
+        datasets: [
+          {
+            label: ' ', // You can set this dynamically as well
+            data: values,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1,
+          },
+        ],
+      });
+
+    } catch (error) {
+      console.error('Error fetching report data:', error);
     }
+    
   };
 
   return (
@@ -111,7 +124,7 @@ function Reports() {
               <Dropdown.Item eventKey="Roles">Roles</Dropdown.Item>
               <Dropdown.Item eventKey="Employees by Pay Grade">Employees by Pay Grade</Dropdown.Item>
               <Dropdown.Item eventKey="Leaves given within last month">Leaves given within last month</Dropdown.Item>
-              
+              <Dropdown.Item eventKey="Employees by Gender">Employees by Gender</Dropdown.Item>
             </DropdownButton>
             </Col>
           </Row>

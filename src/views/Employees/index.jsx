@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Table, Tabs, Tab, Button, CardBody } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -17,26 +17,58 @@ const dashSalesData = [
 
 //Array of employee details
 const employeeDetails = [
-  { employee_id: '001A', name: 'Niduni', avatar: avatar1 },
-  { employee_id: '002A', name: 'Isurumuni', avatar: avatar2 },
-  { employee_id: '003A', name: 'Bhanuka', avatar: avatar2 },
-  { employee_id: '004A', name: 'Umesha', avatar: avatar2 },
-  { employee_id: '005A', name: 'Dewmina', avatar: avatar2 },
+  { employee_id: '001A', first_name: 'Niduni', last_name: 'Kasige' },
+  { employee_id: '002A', first_name: 'Isurumuni', last_name: 'Wijesooriya' },
+  { employee_id: '003A', first_name: 'Bhanuka', last_name: 'Botheju' },
+  { employee_id: '004A', first_name: 'Umesha', last_name: 'Jayakodi' },
+  { employee_id: '005A', first_name: 'Dewmina', last_name: 'Wijekoon' },
 ];
 
 const Employees = () => {
   
   const navigate = useNavigate();
+  
+  const [employees, setEmployees] = useState(employeeDetails);
 
-  const addEmployee = () => {
-    console.log("Add employee");
-    navigate('/Admin/employees/add-employee');
-  }
   // Function to view employee details
-  const viewEmployee = (employee_id) => {
+  const viewEmployee = async (employee_id) => {
     console.log("Viewed employee");
-    navigate('/Admin/employees/profile',{state:{employee_id}});
+    navigate('/app/profile',{state:{employee_id}});
   };
+
+  const fetchEmployees = async () => {
+    try {
+      let response = await fetch('http://127.0.0.1:8000/supervisor/team/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      // If the response is okay, convert it to JSON
+      if (response.ok) {
+        const data = await response.json();
+        const employees = data.length ? data : []; // Use empty array if no data
+        
+        if (!employees || employees.length === 0) {
+          console.log("No data received");
+        } else {
+          console.log("Employees received:", employees);
+          setEmployees(employees); // Update this as per your React state handler
+          
+        }
+      } else {
+        console.error('Error fetching employees:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
 
   return (
     <React.Fragment>
@@ -52,41 +84,36 @@ const Employees = () => {
               <Card.Body className="px-0 py-2">
                 <Table responsive hover className="recent-users">
                   <tbody>
-                    {employeeDetails.map((data, index) => {
+                    {employees.map((data, index) => {
                       
-                      const { employee_id, name, avatar } = data;
+                      const { employee_id, first_name, last_name } = data;
                       return(
                         <tr className="unread">
                         <td>
-                          <img className="rounded-circle" style={{ width: '40px' }} src={avatar} alt="activity-user" />
+                          <img className="rounded-circle" style={{ width: '40px' }} src={avatar2} alt="activity-user" />
                         </td>
                         <td>
                           <h6 className="mb-1" style={{marginLeft: '200px'}}>{employee_id}</h6>
                         </td>
                         <td>
-                          <h6 className="mb-1">{name}</h6>
+                          <h6 className="mb-1">{first_name}</h6>
                         </td>
                         <td>
-                          <Button variant="primary" size="sm" style={{marginLeft: '50px'}} onClick={() => viewEmployee(data.employee_id)}>View</Button>
+                          <h6 className="mb-1">{last_name}</h6>
+                        </td>
+                        <td>
+                          <Button variant="primary" size="sm" style={{marginLeft: '50px'}} onClick={() => viewEmployee(employee_id)}>View</Button>
                         </td>
                         </tr>
                       )
                     }
-                      
                   )}
-
-                  </tbody>
-                  
+                  </tbody> 
                 </Table>
               </Card.Body>
-              
             </Card>
-           
           </Col>
-
-          
         </Row>
-        
       </Row>
     </React.Fragment>
   );

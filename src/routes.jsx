@@ -83,7 +83,7 @@ const routes = [
     routes: [
       {
         exact: 'true',
-        path: '/app/dashboard/default',
+        path: '/app/supervisorDashboard',
         element: lazy(() => import('./views/dashboard/supervisorDashboard'))
       },
       {

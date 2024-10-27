@@ -30,10 +30,15 @@ const rejecttLeaveRequest = () => {
 const LeaveApplications = (name) => {
 
   const navigate = useNavigate();
+
   const viewLeaveRequest = () => {
-    console.log("Viewed");
+    console.log("Viewed", name);
     navigate('/leave-request-form',{state:{name}});
   }
+
+  const fetchLeaveRequest = async () => {
+    
+  };
 
   return (
     <React.Fragment>
