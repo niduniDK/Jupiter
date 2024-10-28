@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Card, Button, Alert } from 'react-bootstrap';
 import { NavLink, Link } from 'react-router-dom';
+import {Toaster, toast} from 'sonner';
 
 import Breadcrumb from '../../../layouts/AdminLayout/Breadcrumb';
 
@@ -12,6 +13,7 @@ const Signin1 = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsAnimated(true);
+      
     }, 100); // Delay before starting the animation
   }, []);
 

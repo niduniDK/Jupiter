@@ -1,5 +1,7 @@
+import { color } from 'd3';
 import React, { useState } from 'react';
 import { Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { Toaster, toast } from 'sonner';
 
 const LeaveForm = () => {
   const [employeeId, setEmployeeId] = useState('');
@@ -30,6 +32,7 @@ const LeaveForm = () => {
       .then(async (response) => {
         if (response.ok) {
           console.log('Form submitted successfully');
+          toast.success('Leave application submitted successfully', {style:{ color: 'green'}}); 
           setEmployeeId('');
           setLeaveStartDate('');
           setPeriodOfAbsence('');
@@ -48,6 +51,7 @@ const LeaveForm = () => {
 
   return (
     <React.Fragment>
+      <Toaster />
       <Card className='d-flex justify-content-center align-items-center min-vh-100' style={{ width: '70%', marginLeft: '200px' }}>
         <Card.Header style={{ fontSize: '30px' }}>Leave Application</Card.Header>
         <Card.Body>

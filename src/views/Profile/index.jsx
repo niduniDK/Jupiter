@@ -87,7 +87,7 @@ const Profile = (props) => {
     };
 
     const getmyprofiledata = async(user_name) => {
-        //setIsSubmitting(true);
+        setIsSubmitting(true);
         console.log("trying to fetch data");
         try {
             const response = await fetch(`http://localhost:8000/employee_/${user_name}`, {

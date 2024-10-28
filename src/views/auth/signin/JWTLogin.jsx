@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Alert, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'sonner';
 
 const JWTLogin = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const JWTLogin = () => {
       }
       */}
 
-      navigate('/app/supervisorDashboard', { replace: true });
+      navigate('/app/supervisorDashboard', { replace: true })
 
     } catch (error) {
       setErrors({ submit: error.message }); // Show error to the user

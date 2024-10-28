@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { Toaster, toast } from 'sonner';
 
 const LeaveRequestForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +33,7 @@ const LeaveRequestForm = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Approve Done');
-        navigate('../dashboard'); // Use navigate function to redirect.
+        navigate('/supervisorDashboard'); // Use navigate function to redirect.
       } else {
         console.error('Approve failed:', response.status);
       }
@@ -41,6 +42,7 @@ const LeaveRequestForm = () => {
       setErrors({ submit: error.message });
     } finally {
       setIsSubmitting(false);
+      toast.success('Leave request approved successfully' , {style:{ color: 'green'}});
     }
   };
 
@@ -71,11 +73,14 @@ const LeaveRequestForm = () => {
       setErrors({ submit: error.message });
     } finally {
       setIsSubmitting(false);
+      toast.error('Leave request rejected successfully', { style: { color: 'red' } });
+
     }
   };
 
   return (
     <React.Fragment>
+      <Toaster />
       <div
         className="auth-wrapper d-flex justify-content-center align-items-center"
         style={{ minHeight: '100vh' }}

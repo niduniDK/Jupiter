@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { Row, Col, Card, Table, Tabs, Tab, ListGroup, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import {Toaster, toast} from 'sonner';
 
 
 import avatar1 from '../../assets/images/user/avatar-1.jpg';
@@ -11,9 +11,9 @@ import avatar2 from '../../assets/images/user/avatar-2.jpg';
 let initialApprovalList = null;
 
 let dashSalesData = [
-  { title: 'On Leave', amount: '201', value: 10 },
-  { title: 'Working format : Full Time', amount: '589',  value: 50},
-  { title: 'Working format : Part Time', amount: '105',  value: 90}
+  { title: 'On Leave', amount: '201', value: parseInt(201*100/(201+589+105)) },
+  { title: 'Working format : Full Time', amount: '589',  value: parseInt(589*100/(201+589+105))},
+  { title: 'Working format : Part Time', amount: '105',  value: parseInt(105*100/(201+589+105))}
 ];
 
  initialApprovalList = [
@@ -44,6 +44,9 @@ const DashDefault = () => {
 
   const getdelaisfrombackend = async () => {
     //getdashSalesData();
+    getOnLeaveEmployeeData();
+    getFullTimeEmployeeData();
+    getHalfTimeEmployeeData();
     getApprovalList();
     //getBirthdayList();
   }
@@ -86,10 +89,123 @@ const DashDefault = () => {
     } 
   };
   
-  const getdashSalesData = async () =>{
-    //
+  // const getdashSalesData = async () =>{}
+
+  const getHalfTimeEmployeeData = async () => {
+    try {
+      // Fetch data from the backend
+      const response = await fetch('http://localhost:8000/today_half_time', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          // Include token for authentication, if required
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+  
+      // If the response is okay, convert it to JSON
+      if (response.ok) {
+        const data = await response.json();
+        // Use the fetched data or set the initialApprovalList if data is empty
+        const halfTimeData = data.length ? data : dashSalesData[0];
+        console.log("fetching half time");
+        console.log(halfTimeData);
+        if(halfTimeData=="null"){
+          console.log("No data");
+        }
+        else{
+          dashSalesData[0] = halfTimeData;
+        }
+
+        // Update state or UI with fetched data
+        // Example: setLeaveRequests(leaveRequests);
+      } else {
+        // Handle errors (e.g., 404, 403, etc.)
+        console.error('Failed to fetch half time:', response.status);
+      }
+    } catch (error) {
+      // Catch any network errors
+      console.error('Error fetching half time:', error);
+    } 
   }
   
+
+  const getFullTimeEmployeeData = async () => {
+    try {
+      // Fetch data from the backend
+      const response = await fetch('http://localhost:8000/today_full_time', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          // Include token for authentication, if required
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+  
+      // If the response is okay, convert it to JSON
+      if (response.ok) {
+        const data = await response.json();
+        // Use the fetched data or set the initialApprovalList if data is empty
+        const fullTimeData = data.length ? data : dashSalesData[1];
+        console.log(fullTimeData);
+        if(fullTimeData=="null"){
+          console.log("No data");
+        }
+        else{
+          dashSalesData[1] = fullTimeData;
+        }
+
+        // Update state or UI with fetched data
+       
+      } else {
+        // Handle errors (e.g., 404, 403, etc.)
+        console.error('Failed to fetch full time:', response.status);
+      }
+    } catch (error) {
+      // Catch any network errors
+      console.error('Error fetching full time:', error);
+    } 
+  }
+  
+
+  const getOnLeaveEmployeeData = async () => {
+    try {
+      // Fetch data from the backend
+      const response = await fetch('http://localhost:8000/on_leave', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          // Include token for authentication, if required
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+  
+      // If the response is okay, convert it to JSON
+      if (response.ok) {
+        const data = await response.json();
+        // Use the fetched data or set the initialApprovalList if data is empty
+        const onLeaveData = data.length ? data : dashSalesData[2];
+        console.log(onLeaveData);
+        if(onLeaveData=="null"){
+          console.log("No data");
+        }
+        else{
+          dashSalesData[2] = onLeaveData;
+        }
+
+        // Update state or UI with fetched data
+        
+      } else {
+        // Handle errors (e.g., 404, 403, etc.)
+        console.error('Failed to fetch on leave:', response.status);
+      }
+    } catch (error) {
+      // Catch any network errors
+      console.error('Error fetching on leave:', error);
+    } 
+  }
+  
+
 
   const [listOpen, setListOpen] = useState(false);
   const [approvalList, setApprovalList] = useState(initialApprovalList);

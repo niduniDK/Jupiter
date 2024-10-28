@@ -23,29 +23,35 @@ const NavRight = () => {
 
   return (
     <React.Fragment>
-      <ListGroup as="ul" bsPrefix=" " className="navbar-nav ml-auto" id="navbar-right">
+      {/* <ListGroup as="ul" bsPrefix=" " className="navbar-nav ml-auto" id="navbar-right">
 
         <ListGroup.Item as="li" bsPrefix=" ">
           <Dropdown align={'end'} className="drp-user">
-            <Dropdown.Toggle as={Link} variant="link" to="#" id="dropdown-basic">
-              <i className="icon feather icon-settings" />
-            </Dropdown.Toggle>
+            <Dropdown.Toggle as={Link} variant="link" to="#" id="dropdown-basic"> */}
+            <a onClick={seeProfile} className="dropdown-item" role="button" style={{ cursor: 'pointer' }}>
+              <img
+                src={avatar1}
+                className="img-radius"
+                alt="User Profile"
+                style={{ marginBottom: '30px', borderRadius: '50%', objectFit: 'cover', width: '100px', height: '100px',position: 'absolute', bottom: '20px', right: '20px', top: '20px' }}
+              />
+            </a>
+
+            {/* </Dropdown.Toggle>
             <Dropdown.Menu align="end" className="profile-notification">
+
               <div className="pro-head">
 
-                <img src={avatar1} className="img-radius" alt="User Profile" />
-                <span>{localStorage.getItem('username')}</span>
+                <span>{localStorage.getItem('username')}</span> */}
 
-                <Link to="/auth/signin-1" className="dud-logout" title="Logout">
+                {/* <Link to="/auth/signin-1" className="dud-logout" title="Logout">
                   <i className="feather icon-log-out" />
                 </Link>
-              </div>
+              </div>  */}
 
-              <ListGroup as="ul" bsPrefix=" " variant="flush" className="pro-body">
+              {/* <ListGroup as="ul" bsPrefix=" " variant="flush" className="pro-body">
                 <ListGroup.Item as="li" bsPrefix=" ">
-                <a onClick={seeProfile} className="dropdown-item" role="button" style={{ cursor: 'pointer' }}>
-                  <i className="feather icon-user" /> Profile
-                </a>
+                
                 </ListGroup.Item>
               </ListGroup>
 
@@ -53,7 +59,7 @@ const NavRight = () => {
           </Dropdown>
         </ListGroup.Item>
       </ListGroup>
-      <ChatList listOpen={listOpen} closed={() => setListOpen(false)} />
+      <ChatList listOpen={listOpen} closed={() => setListOpen(false)} /> */}
     </React.Fragment>
   );
 };
