@@ -89,21 +89,17 @@ const Employees = () => {
                       const { employee_id, first_name, last_name } = data;
                       return(
                         <tr className="unread">
-                        <td>
-                          <img className="rounded-circle" style={{ width: '40px' }} src={avatar2} alt="activity-user" />
-                        </td>
-                        <td>
-                          <h6 className="mb-1" style={{marginLeft: '200px'}}>{employee_id}</h6>
-                        </td>
-                        <td>
-                          <h6 className="mb-1">{first_name}</h6>
-                        </td>
-                        <td>
-                          <h6 className="mb-1">{last_name}</h6>
-                        </td>
-                        <td>
-                          <Button variant="primary" size="sm" style={{marginLeft: '50px'}} onClick={() => viewEmployee(employee_id)}>View</Button>
-                        </td>
+                          <td>
+                            <img className="rounded-circle avatar" src={avatar2} alt="user" />
+                          </td>
+                          <td>
+                            <h6 className="employee-name">{`${first_name} ${last_name}`}</h6>
+                          </td>
+                          <td>
+                            <Button variant="primary" className="action-button view-button" onClick={() => onView(employee_id)}>
+                              View
+                            </Button>
+                          </td>
                         </tr>
                       )
                     }
