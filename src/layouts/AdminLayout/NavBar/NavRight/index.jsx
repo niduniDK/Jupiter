@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, ListGroup, Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import ChatList from './ChatList';
@@ -12,6 +12,14 @@ import avatar4 from '../../../../assets/images/user/avatar-4.jpg';
 
 const NavRight = () => {
   const [listOpen, setListOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const seeProfile = () => {
+    console.log("See Profile");
+    const user_name = localStorage.getItem('username');
+    console.log(user_name);
+    navigate('/app/profile', { state: { employee_id: user_name } });
+  };
 
   return (
     <React.Fragment>
@@ -35,9 +43,9 @@ const NavRight = () => {
 
               <ListGroup as="ul" bsPrefix=" " variant="flush" className="pro-body">
                 <ListGroup.Item as="li" bsPrefix=" ">
-                  <Link to="/profile" className="dropdown-item">
-                    <i className="feather icon-user" /> Profile
-                  </Link>
+                <a onClick={seeProfile} className="dropdown-item" role="button" style={{ cursor: 'pointer' }}>
+                  <i className="feather icon-user" /> Profile
+                </a>
                 </ListGroup.Item>
               </ListGroup>
 

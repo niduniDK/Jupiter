@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useRef } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
 import { Row, Col, Card, Button, Form } from 'react-bootstrap';
 import avatar1 from '../../assets/images/user/avatar-1.jpg';
 
-const Profile = ({onChangePage}) => {
+const Profile = (props) => {
+    const [edit, setEdit] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [employeeDetails, setEmployeeDetails] = useState({});
+    const [profiledetails , setprofiledetails] = useState({});
     const location = useLocation();
-    const initialEmployeeId = location.state?.employee_id;
+    const { employee_id } = location.state || {};
+    console.log(employee_id);
+    console.log(location);
+
+
 
     const employeeIDRef = useRef(null);
     const firstNameRef = useRef(null);
@@ -31,69 +40,87 @@ const Profile = ({onChangePage}) => {
     const NoPayLeave = useRef(null);
     const MaternityLeave = useRef(null);
 
+    useEffect(() => {
+        if (employee_id) {
+            if (location.pathname === '/app/profile') {
+                console.log("this is my profile details");
+                getmyprofiledata(employee_id);
+            } else {
+                console.log("this is employee profile details");
+                getEmployeeDetails(employee_id);
+            }
+        }
+    }, [employee_id, location.pathname]);
+    
 
-    const [edit, setEdit] = useState(false);  // Changed from 'false' to false
-
-    const [employee_id, setEmployeeId] = useState(initialEmployeeId);
-
-    console.log("Employee ID:", employee_id);
-
-    const changepage = (value) =>{
-        setEdit(value);
-    }
-
-    const savechanges = (value) => {
-        setEdit(value);
-        console.log(firstNameRef.current.value);
-        
-    }
-
-    let profile = {
-        employee_id: employee_id,
-        first_name : firstNameRef.current?.value || '',
-        last_name: lastNameRef.current?.value || '',
-        birthday: birthdayRef.current?.value || '',
-        gender: Gender.current?.value || '',
-        marital_status: MaritalStatus.current?.value || '',
-        number_of_dependents: NoOfDependents.current?.value || '',
-        address: Address.current?.value || '',
-        contact_number: ContactNumber.current?.value || '',
-        business_email: BusinessEmail.current?.value || '',
-        job_title: JobTitle.current?.value || '',
-        department_name: Department.current?.value || '',
-        branch_name: Branch.current?.value || '',
-        emergency_contact_name: EfirstName.current?.value || '',
-        emergency_contact_address: EAddress.current?.value || '',
-        emergency_contact_number: EContactNumber.current?.value || '',
-    }
-
-    const [employeeProfile, setEmployeeProfile] = useState(profile);
-
-    const fetchProfile = async () => {
+    const getEmployeeDetails = async (id) => {
+        setIsSubmitting(true);
         try {
-            let response = await fetch(`http://127.0.0.1:8000/employee_/${employee_id}`,{
+            const response = await fetch(`http://localhost:8000/employee_/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            }
-        });
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.ok) {
                 const data = await response.json();
-                console.log("Employee data received:", data);
-                setEmployeeProfile(data);
+                setprofiledetails(data);
+                console.log('Received success');
+                console.log(data);
             } else {
-                console.log("Error fetching employee data");
+                console.error('Receive failed:', response.status);
             }
-            
-        }catch (error) {
-            console.error("Error fetching employee data:", error);
+        } catch (error) {
+            console.log('Error occurred:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEmployeeDetails((prevDetails) => ({
+            ...prevDetails,
+            [name]: value,
+        }));
+    };
+
+    const getmyprofiledata = async(user_name) => {
+        //setIsSubmitting(true);
+        console.log("trying to fetch data");
+        try {
+            const response = await fetch(`http://localhost:8000/employee_/${user_name}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setEmployeeDetails(data);
+                console.log('Received success');
+                console.log(data);
+            } else {
+                console.error('Receive failed:', response.status);
+            }
+        } catch (error) {
+            console.log('Error occurred:', error);
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
-    useEffect(() => {
-        fetchProfile();
-    }, [employee_id]);
+    const changepage = (value) => {
+        setEdit(value);
+    };
+
+    const savechanges = () => {
+        setEdit(false);
+        console.log(employeeDetails.first_name);  // Example usage
+    };
+
 
     return (
         <>
@@ -120,63 +147,66 @@ const Profile = ({onChangePage}) => {
                                         <Form.Group as={Row} className="mb-3" controlId="employeeID">
                                             <Form.Label column sm={4}>Employee ID</Form.Label>
                                             <Col sm={8}>
-                                                <Form.Control type="text" defaultValue="001A" ref={employeeIDRef} value={employeeProfile.employee_id}/>
+                                                <Form.Control
+                                                    type="text"
+                                                    value={employeeDetails.employee_id || ''}
+                                                    ref={employeeIDRef}
+                                                />
                                             </Col>
                                         </Form.Group>
-
                                         <Form.Group as={Row} className="mb-3" controlId="first_name">
                                             <Form.Label column sm={4}>First Name</Form.Label>
                                             <Col sm={8}>
-                                                <Form.Control type="text" defaultValue="Mary" ref={firstNameRef} value={employeeProfile.first_name}/>
+                                                <Form.Control type="text" value={employeeDetails.first_name || ''} ref={firstNameRef}/>
                                             </Col>
                                         </Form.Group>
 
                                         <Form.Group as={Row} className="mb-3" controlId="last_name">
                                             <Form.Label column sm={4}>Last Name</Form.Label>
                                             <Col sm={8}>
-                                                <Form.Control type="text" defaultValue="Stevens" ref={lastNameRef} value={employeeProfile.last_name}/>
+                                                <Form.Control type="text" value={employeeDetails.last_name || ''} ref={lastNameRef}/>
                                             </Col>
                                         </Form.Group>
 
                                         <Form.Group as={Row} className="mb-3" controlId="birthday">
                                             <Form.Label column sm={4}>Birthday</Form.Label>
                                             <Col sm={8}>
-                                                <Form.Control type="date" defaultValue="2000-01-01" ref={birthdayRef} value={employeeProfile.birthday}/>
+                                                <Form.Control type="date" value={employeeDetails.birthday || ''} ref={birthdayRef} />
                                             </Col>
                                         </Form.Group>
 
                                         <Form.Group as={Row} className="mb-3" controlId="gender">
                                             <Form.Label column sm={4}>Gender</Form.Label>
                                             <Col sm={8}>
-                                                <Form.Control type="text" defaultValue="Female" ref={Gender} value={employeeProfile.gender}/>
+                                                <Form.Control type="text" value={employeeDetails.gender || ''} ref={Gender}/>
                                             </Col>
                                         </Form.Group>
 
                                         <Form.Group as={Row} className="mb-3" controlId="marital_status">
                                             <Form.Label column sm={4}>Marital Status</Form.Label>
                                             <Col sm={8}>
-                                                <Form.Control type="text" defaultValue="Married" ref={MaritalStatus} value={employeeProfile.marital_status}/>
+                                                <Form.Control type="text" value={employeeDetails.marital_status || ''} ref={MaritalStatus}/>
                                             </Col>
                                         </Form.Group>
 
                                         <Form.Group as={Row} className="mb-3" controlId="no_of_dependents">
                                             <Form.Label column sm={4}>No. of Dependents</Form.Label>
                                             <Col sm={8}>
-                                                <Form.Control type="decimal" defaultValue="2" ref={NoOfDependents} value={employeeProfile.number_of_dependents}/>
+                                                <Form.Control type="decimal" value={employeeDetails.number_of_dependents || ''} ref={NoOfDependents}/>
                                             </Col>
                                         </Form.Group>
 
                                         <Form.Group as={Row} className="mb-3" controlId="address">
                                             <Form.Label column sm={4}>Address</Form.Label>
                                             <Col sm={8}>
-                                                <Form.Control type="text" defaultValue="No. 123, Bandaranayaka Mw., Katubedda" ref={Address} value={employeeProfile.address}/>
+                                                <Form.Control type="text" value={employeeDetails.address || ''} ref={Address}/>
                                             </Col>
                                         </Form.Group>
 
                                         <Form.Group as={Row} className="mb-3" controlId="contact_number">
                                             <Form.Label column sm={4}>Contact Number</Form.Label>
                                             <Col sm={8}>
-                                                <Form.Control type="text" defaultValue="0123456789" ref={ContactNumber} value={employeeProfile.contact_number}/>
+                                                <Form.Control type="text" value={employeeDetails.contact_number || ''} ref={ContactNumber}/>
                                             </Col>
                                         </Form.Group>
                                     </Form>
@@ -192,21 +222,21 @@ const Profile = ({onChangePage}) => {
                                 <Form.Group as={Row} className="mb-3" controlId="first_name">
                                     <Form.Label column sm={4}>First Name</Form.Label>
                                     <Col sm={8}>
-                                        <Form.Control type="text" defaultValue="Mary" ref={EfirstName} value={employeeProfile.emergency_contact_name}/>
+                                        <Form.Control type="text" value={employeeDetails.emergency_contact_name || ''} ref={EfirstName}/>
                                     </Col>
                                 </Form.Group>
 
                                 <Form.Group as={Row} className="mb-3" controlId="address">
                                     <Form.Label column sm={4}>Address</Form.Label>
                                     <Col sm={8}>
-                                        <Form.Control type="text" defaultValue="No. 123, Bandaranayaka Mw., Katubedda" ref={EAddress} value={employeeProfile.emergency_address}/>
+                                        <Form.Control type="text" value={employeeDetails.emergency_contact_address || ''} ref={EAddress}/>
                                     </Col>
                                 </Form.Group>
 
                                 <Form.Group as={Row} className="mb-3" controlId="contact_number">
                                     <Form.Label column sm={4}>Contact Number</Form.Label>
                                     <Col sm={8}>
-                                        <Form.Control type="text" defaultValue="0123456789" ref={EContactNumber} value={employeeProfile.emergency_contact_number}/>
+                                        <Form.Control type="text" value={employeeDetails.emergency_contact_number || ''} ref={EContactNumber} />
                                     </Col>
                                 </Form.Group>
                             </Form>
@@ -214,72 +244,37 @@ const Profile = ({onChangePage}) => {
                     </Card>
 
                     <Card className="mx-auto shadow-lg" lg={6} md={8} style={{ width: '85%', margin: '30px' }}>
-                        <Card.Header>Job Details</Card.Header>
+                        <Card.Header>Employee Details</Card.Header>
                         <Card.Body id='card-1' style={{ margin: '30px' }}>
                             <Form>
                                 <Form.Group as={Row} className="mb-3" controlId="job_title">
                                     <Form.Label column sm={4}>Job Title</Form.Label>
                                     <Col sm={8}>
-                                        <Form.Control type="text" defaultValue="Software Engineer" ref={JobTitle} value={employeeProfile.job_title}/>
+                                        <Form.Control type="text" value={employeeDetails.job_title || ''} ref={JobTitle}/>
                                     </Col>
                                 </Form.Group>
 
                                 <Form.Group as={Row} className="mb-3" controlId="business_email">
                                     <Form.Label column sm={4}>Business Email</Form.Label>
                                     <Col sm={8}>
-                                        <Form.Control type="text" defaultValue="abc@jupiter.com" ref={BusinessEmail} value={employeeProfile.business_email}/>
+                                        <Form.Control type="text" value={employeeDetails.business_email || ''} ref={BusinessEmail} />
                                     </Col>
                                 </Form.Group>
 
                                 <Form.Group as={Row} className="mb-3" controlId="department">
                                     <Form.Label column sm={4}>Department</Form.Label>
                                     <Col sm={8}>
-                                        <Form.Control type="text" defaultValue="Technical Department" ref={Department} value={employeeProfile.department_name}/>
+                                        <Form.Control type="text" value={employeeDetails.department_name || ''} ref={Department}/>
                                     </Col>
                                 </Form.Group>
 
                                 <Form.Group as={Row} className="mb-3" controlId="branch">
                                     <Form.Label column sm={4}>Branch</Form.Label>
                                     <Col sm={8}>
-                                        <Form.Control type="text" defaultValue="Colombo" ref={Branch} value={employeeProfile.branch_name}/>
+                                        <Form.Control type="text" value={employeeDetails.branch_name || ''} ref={Branch} />
                                     </Col>
                                 </Form.Group>
 
-                            </Form>
-                        </Card.Body>
-                    </Card>
-
-                    <Card className="mx-auto shadow-lg" lg={6} md={8} style={{ width: '85%', margin: '30px' }}>
-                        <Card.Header>Remaining Leave Count</Card.Header>
-                        <Card.Body id='card-1' style={{ margin: '30px' }}>
-                            <Form>
-                                <Form.Group as={Row} className="mb-3" controlId="annual_leave">
-                                    <Form.Label column sm={4}>Annual Leaves</Form.Label>
-                                    <Col sm={8}>
-                                        <Form.Control type="decimal" defaultValue="20" ref={AnnualLeave} />
-                                    </Col>
-                                </Form.Group>
-
-                                <Form.Group as={Row} className="mb-3" controlId="casual_leave">
-                                    <Form.Label column sm={4}>Casual Leaves</Form.Label>
-                                    <Col sm={8}>
-                                        <Form.Control type="decimal" defaultValue="15" ref={CasualLeave}/>
-                                    </Col>
-                                </Form.Group>
-
-                                <Form.Group as={Row} className="mb-3" controlId="nopay_leave">
-                                    <Form.Label column sm={4}>No-pay Leaves</Form.Label>
-                                    <Col sm={8}>
-                                        <Form.Control type="decimal" defaultValue="50" ref={NoPayLeave} />
-                                    </Col>
-                                </Form.Group>
-
-                                <Form.Group as={Row} className="mb-3" controlId="maternity_leave">
-                                    <Form.Label column sm={4}>Maternity Leaves</Form.Label>
-                                    <Col sm={8}>
-                                        <Form.Control type="decimal" defaultValue="90" ref={MaternityLeave}/>
-                                    </Col>
-                                </Form.Group>
                             </Form>
                         </Card.Body>
                     </Card>
@@ -316,63 +311,63 @@ const Profile = ({onChangePage}) => {
                                             <Form.Group as={Row} className="mb-3" controlId="employeeID">
                                                 <Form.Label column sm={4}>Employee ID</Form.Label>
                                                 <Col sm={8}>
-                                                    <Form.Control type="text" defaultValue="001A" readOnly />
+                                                    <Form.Control type="text" value={employeeDetails.employee_id || ''}readOnly />
                                                 </Col>
                                             </Form.Group>
 
                                             <Form.Group as={Row} className="mb-3" controlId="first_name">
                                                 <Form.Label column sm={4}>First Name</Form.Label>
                                                 <Col sm={8}>
-                                                    <Form.Control type="text" defaultValue="Mary" readOnly />
+                                                    <Form.Control type="text" value={employeeDetails.first_name || ''}readOnly />
                                                 </Col>
                                             </Form.Group>
 
                                             <Form.Group as={Row} className="mb-3" controlId="last_name">
                                                 <Form.Label column sm={4}>Last Name</Form.Label>
                                                 <Col sm={8}>
-                                                    <Form.Control type="text" defaultValue="Stevens" readOnly />
+                                                    <Form.Control type="text" value={employeeDetails.last_name || ''} readOnly />
                                                 </Col>
                                             </Form.Group>
 
                                             <Form.Group as={Row} className="mb-3" controlId="birthday">
                                                 <Form.Label column sm={4}>Birthday</Form.Label>
                                                 <Col sm={8}>
-                                                    <Form.Control type="date" defaultValue="2000-01-01" readOnly />
+                                                    <Form.Control type="text" value={employeeDetails.birthday || ''} readOnly />
                                                 </Col>
                                             </Form.Group>
 
                                             <Form.Group as={Row} className="mb-3" controlId="gender">
                                                 <Form.Label column sm={4}>Gender</Form.Label>
                                                 <Col sm={8}>
-                                                    <Form.Control type="text" defaultValue="Female" readOnly />
+                                                    <Form.Control type="text" value={employeeDetails.gender || ''} readOnly />
                                                 </Col>
                                             </Form.Group>
 
                                             <Form.Group as={Row} className="mb-3" controlId="marital_status">
                                                 <Form.Label column sm={4}>Marital Status</Form.Label>
                                                 <Col sm={8}>
-                                                    <Form.Control type="text" defaultValue="Married" readOnly />
+                                                    <Form.Control type="text" value={employeeDetails.marital_status || ''} readOnly />
                                                 </Col>
                                             </Form.Group>
 
                                             <Form.Group as={Row} className="mb-3" controlId="no_of_dependents">
                                                 <Form.Label column sm={4}>No. of Dependents</Form.Label>
                                                 <Col sm={8}>
-                                                    <Form.Control type="decimal" defaultValue="2" readOnly />
+                                                    <Form.Control type="decimal" value={employeeDetails.number_of_dependents || ''} readOnly />
                                                 </Col>
                                             </Form.Group>
 
                                             <Form.Group as={Row} className="mb-3" controlId="address">
                                                 <Form.Label column sm={4}>Address</Form.Label>
                                                 <Col sm={8}>
-                                                    <Form.Control type="text" defaultValue="No. 123, Bandaranayaka Mw., Katubedda" readOnly />
+                                                    <Form.Control type="text" value={employeeDetails.address || ''} readOnly />
                                                 </Col>
                                             </Form.Group>
 
                                             <Form.Group as={Row} className="mb-3" controlId="contact_number">
                                                 <Form.Label column sm={4}>Contact Number</Form.Label>
                                                 <Col sm={8}>
-                                                    <Form.Control type="text" defaultValue="0123456789" readOnly />
+                                                    <Form.Control type="text" value={employeeDetails.contact_number || ''} readOnly />
                                                 </Col>
                                             </Form.Group>
                                         </Form>
@@ -388,28 +383,22 @@ const Profile = ({onChangePage}) => {
                                     <Form.Group as={Row} className="mb-3" controlId="first_name">
                                         <Form.Label column sm={4}>First Name</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="text" defaultValue="Mary" readOnly />
+                                            <Form.Control type="text" value={employeeDetails.emergency_contact_name || ''} readOnly />
                                         </Col>
                                     </Form.Group>
 
-                                    <Form.Group as={Row} className="mb-3" controlId="last_name">
-                                        <Form.Label column sm={4}>Last Name</Form.Label>
-                                        <Col sm={8}>
-                                            <Form.Control type="text" defaultValue="Stevens" readOnly />
-                                        </Col>
-                                    </Form.Group>
 
                                     <Form.Group as={Row} className="mb-3" controlId="address">
                                         <Form.Label column sm={4}>Address</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="text" defaultValue="No. 123, Bandaranayaka Mw., Katubedda" readOnly />
+                                            <Form.Control type="text" value={employeeDetails.emergency_contact_address || ''} readOnly />
                                         </Col>
                                     </Form.Group>
 
                                     <Form.Group as={Row} className="mb-3" controlId="contact_number">
                                         <Form.Label column sm={4}>Contact Number</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="text" defaultValue="0123456789" readOnly />
+                                            <Form.Control type="text" value={employeeDetails.emergency_contact_number || ''} readOnly />
                                         </Col>
                                     </Form.Group>
                                 </Form>
@@ -423,37 +412,31 @@ const Profile = ({onChangePage}) => {
                                     <Form.Group as={Row} className="mb-3" controlId="job_title">
                                         <Form.Label column sm={4}>Job Title</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="text" defaultValue="Software Engineer" readOnly />
+                                            <Form.Control type="text" value={employeeDetails.job_title || ''} readOnly />
                                         </Col>
                                     </Form.Group>
 
                                     <Form.Group as={Row} className="mb-3" controlId="business_email">
                                         <Form.Label column sm={4}>Business Email</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="text" defaultValue="abc@jupiter.com" readOnly />
+                                            <Form.Control type="text" value={employeeDetails.business_email || ''} readOnly />
                                         </Col>
                                     </Form.Group>
 
                                     <Form.Group as={Row} className="mb-3" controlId="department">
                                         <Form.Label column sm={4}>Department</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="text" defaultValue="Technical Department" readOnly />
+                                            <Form.Control type="text" value={employeeDetails.department_name || ''} readOnly />
                                         </Col>
                                     </Form.Group>
 
                                     <Form.Group as={Row} className="mb-3" controlId="branch">
                                         <Form.Label column sm={4}>Branch</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="text" defaultValue="Colombo" readOnly />
+                                            <Form.Control type="text" value={employeeDetails.branch_name || ''} readOnly />
                                         </Col>
                                     </Form.Group>
 
-                                    <Form.Group as={Row} className="mb-3" controlId="supervisor_id">
-                                        <Form.Label column sm={4}>Supervisor ID</Form.Label>
-                                        <Col sm={8}>
-                                            <Form.Control type="text" defaultValue="002B" readOnly />
-                                        </Col>
-                                    </Form.Group>
                                 </Form>
                             </Card.Body>
                         </Card>
@@ -465,28 +448,28 @@ const Profile = ({onChangePage}) => {
                                     <Form.Group as={Row} className="mb-3" controlId="annual_leave">
                                         <Form.Label column sm={4}>Annual Leaves</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="decimal" defaultValue="20" readOnly />
+                                            <Form.Control type="decimal" value={employeeDetails.branch_name || ''} readOnly />
                                         </Col>
                                     </Form.Group>
 
                                     <Form.Group as={Row} className="mb-3" controlId="casual_leave">
                                         <Form.Label column sm={4}>Casual Leaves</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="decimal" defaultValue="15" readOnly />
+                                            <Form.Control type="decimal" value={employeeDetails.branch_name || ''} readOnly />
                                         </Col>
                                     </Form.Group>
 
                                     <Form.Group as={Row} className="mb-3" controlId="nopay_leave">
                                         <Form.Label column sm={4}>No-pay Leaves</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="decimal" defaultValue="50" readOnly />
+                                            <Form.Control type="decimal" value={employeeDetails.branch_name || ''} readOnly />
                                         </Col>
                                     </Form.Group>
 
                                     <Form.Group as={Row} className="mb-3" controlId="maternity_leave">
                                         <Form.Label column sm={4}>Maternity Leaves</Form.Label>
                                         <Col sm={8}>
-                                            <Form.Control type="decimal" defaultValue="90" readOnly />
+                                            <Form.Control type="decimal" value={employeeDetails.branch_name || ''} readOnly />
                                         </Col>
                                     </Form.Group>
                                 </Form>

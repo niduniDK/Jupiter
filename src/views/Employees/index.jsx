@@ -33,7 +33,7 @@ const Employees = () => {
   // Function to view employee details
   const viewEmployee = async (employee_id) => {
     console.log("Viewed employee");
-    navigate('/app/profile',{state:{employee_id}});
+    navigate('/app/profile',{state:{employee_id: employee_id}});
   };
 
   const fetchEmployees = async () => {
