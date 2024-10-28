@@ -33,7 +33,7 @@ const LeaveRequestForm = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Approve Done');
-        navigate('/supervisorDashboard'); // Use navigate function to redirect.
+        navigate('../dashboard'); // Use navigate function to redirect.
       } else {
         console.error('Approve failed:', response.status);
       }
